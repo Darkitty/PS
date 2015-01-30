@@ -5,7 +5,7 @@ OBJ = $(SRC: .c=.o)
 CFLAGS=-W -Wall -lm -g -O2 -pipe
 
 # SRC variables for moduls
-SRC_GEN = generate.c testGenerate.c
+SRC_GEN = generate.c
 SRC_CALC = calculate.c testCalculate.c
 SRC_MAIN = generate.c calculate.c main.c
 
@@ -16,14 +16,14 @@ exec: $(OBJ)
 
 
 # Compilation for Pile and its tests
-generate: generate.c testGenerate.c generate.h
+generate: generate.c generate.h
 	$(CC) -o generate $(SRC_GEN) $(CFLAGS)
 # Compilation for List and its tests
 calculate: calculate.c testCalculate.c calculate.h
 	$(CC) -o calculate $(SRC_CALC) $(CFLAGS)
 # Compilation for Cell and its tests
 main: generate.c calculate.c main.c generate.h calculate.h
-	$(CC) -o main $(SRC_MAIN) $(CFLAGS)
+	$(CC) $(SRC_MAIN) -o main $(CFLAGS)
 
 
 # Utilities

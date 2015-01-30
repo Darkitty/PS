@@ -7,5 +7,5 @@
 #include <sched.h>
 #include <errno.h>
 
-int generateFile(int argc,char ** argv);
-int checkSize(int x1, int y1, int x2, int y2);
+int generateFile(int nbMult, int x1, int y1, int x2, int y2);
+int checkSize(int y1, int x2);
