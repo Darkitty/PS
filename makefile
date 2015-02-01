@@ -2,7 +2,7 @@
 CC = gcc
 SRC = generate.c calculate.c main.c
 OBJ = $(SRC: .c=.o)
-CFLAGS=-W -Wall -lm -g -O2 -pipe
+CFLAGS=-W -Wall -lm -g -O2 -pipe -lpthread
 
 # SRC variables for moduls
 SRC_GEN = generate.c
@@ -12,7 +12,7 @@ SRC_MAIN = generate.c calculate.c main.c
 
 # Main make for final executable
 exec: $(OBJ)
-	$(CC) -o exec $(OBJ)
+	$(CC) -o exec.out $(OBJ)
 
 
 # Compilation for Pile and its tests
@@ -23,7 +23,7 @@ calculate: calculate.c testCalculate.c calculate.h
 	$(CC) -o calculate $(SRC_CALC) $(CFLAGS)
 # Compilation for Cell and its tests
 main: generate.c calculate.c main.c generate.h calculate.h
-	$(CC) $(SRC_MAIN) -o main $(CFLAGS)
+	$(CC) $(SRC_MAIN) -o main.out $(CFLAGS)
 
 
 # Utilities
