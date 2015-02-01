@@ -2,7 +2,7 @@
 CC = gcc
 SRC = generate.c calculate.c main.c
 OBJ = $(SRC: .c=.o)
-CFLAGS=-W -Wall -lm -g -O2 -pipe -lpthread
+CFLAGS=-W -Wall -lm -g -O2 -pipe -lpthread -pedantic -ansi
 
 # SRC variables for moduls
 SRC_GEN = generate.c
