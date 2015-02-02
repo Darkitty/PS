@@ -33,5 +33,7 @@ int main(int argc, char const *argv[])
 	printf("|   Calcul des matrices      |\n");
 	printf("==============================\n");
 
+	calculMatrice("matrice.txt");
+
 	return 0;
 }

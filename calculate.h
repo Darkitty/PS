@@ -7,3 +7,5 @@
 #include <string.h>
 #include <sched.h>
 #include <errno.h>
+
+int calculMatrice(const char* file);
