@@ -8,4 +8,4 @@
 #include <sched.h>
 #include <errno.h>
 
-int calculMatrice(const char* file);
+int intMatrice(const char* file, int** matrice1, int** matrice2);

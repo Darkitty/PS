@@ -4,6 +4,9 @@
 int main(int argc, char const *argv[])
 {
 	int nbMult, x1, y1, x2, y2;
+	int** matrice1;
+	int** matrice2;
+
 	if (argc < 5)
 	{
 		printf("usage: %s nbMult matrice_x1 matrice_y1 matrice_x2 matrice_y2\n",argv[0]);
@@ -33,7 +36,7 @@ int main(int argc, char const *argv[])
 	printf("|   Calcul des matrices      |\n");
 	printf("==============================\n");
 
-	calculMatrice("matrice.txt");
+	intMatrice("matrice.txt", matrice1, matrice2);
 
 	return 0;
 }
