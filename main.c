@@ -25,6 +25,13 @@ int main(int argc, char const *argv[])
 		printf("Erreur lors de la generation du fichier");
 		return(EXIT_FAILURE);
 	}
+	printf("==============================\n");
+	printf("|Generation du fichier reussi|\n");
+	printf("==============================\n");
+
+	printf("==============================\n");
+	printf("|   Calcul des matrices      |\n");
+	printf("==============================\n");
 
 	return 0;
 }
