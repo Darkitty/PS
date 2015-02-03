@@ -6,6 +6,7 @@
 #include <string.h>
 #include <sched.h>
 #include <errno.h>
+#include <time.h>
 
-int generateFile(int nbMult, int x1, int y1, int x2, int y2);
-int checkSize(int y1, int x2);
+int generateFile(int nbMult);
+void generateMatrice(FILE* fp, int x, int y);

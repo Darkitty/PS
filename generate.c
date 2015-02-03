@@ -1,42 +1,57 @@
 #include "generate.h"
 
-int generateFile(int nbMult, int x1, int y1, int x2, int y2) {
+int generateFile(int nbMult) {
 	FILE* fp;
-	int i, j, tmp;
+	int x, y, z;
+	int i;
+
+	srand(time(NULL));
 
 	remove("matrice.txt");
 	fp = fopen("matrice.txt","a");
 
 	fprintf(fp, "%d\n", nbMult);
-	fprintf(fp, "%d %d\n", x1, y1);
-	fprintf(fp, "%d %d\n", x2, y2);
 
-	for (j = 0; j < x1; j++)
+	for (i = 0; i < nbMult; i++)
 	{
-		for (i = 0; i < y1; i++)
+		x = -1;
+		y = -1;
+		z = -1;
+		while(x <= 0)
 		{
-			tmp = 10.0*(0.5-((double)rand())/((double)RAND_MAX));
-			fprintf(fp, "%d ", tmp);
+			x = 10.0*(0.5-((double)rand())/((double)RAND_MAX));
+			printf("X : %d\n", x);
 		}
-		fprintf(fp, "\n");
-	}
-
-	for (j = 0; j < x2; j++)
-	{
-		for (i = 0; i < y2; i++)
+		while(y <= 0)
 		{
-			tmp = 10.0*(0.5-((double)rand())/((double)RAND_MAX));
-			fprintf(fp, "%d ", tmp);
+			y = 10.0*(0.5-((double)rand())/((double)RAND_MAX));
+			printf("Y : %d\n", y);
 		}
-		fprintf(fp, "\n");
+		while(z <= 0)
+		{
+			z = 10.0*(0.5-((double)rand())/((double)RAND_MAX));
+			printf("Z : %d\n", z);
+		}
+		fprintf(fp, "%d %d\n", x, y);
+		fprintf(fp, "%d %d\n", y, z);
+		generateMatrice(fp, x, y);
+		generateMatrice(fp, y, z);
 	}
 
 	fclose(fp);
 	return 0;
 }
 
-int checkSize(int y1, int x2) {
-	if (y1 != x2)
-		return -1;
-	return 0;
+void generateMatrice(FILE* fp, int x, int y) {
+	int i, j;
+	double tmp;
+	for (i = 0; i < x; i++)
+	{
+		for (j = 0; j < y; j++)
+		{
+			tmp = 10.0*(0.5-((double)rand())/((double)RAND_MAX));
+			fprintf(fp, "%.1f ", tmp);
+		}
+		fprintf(fp, "\n");
+	}
 }
