@@ -14,16 +14,9 @@ int generateFile(int nbMult) {
 
 	for (i = 0; i < nbMult; i++)
 	{
-		x = -1;
-		y = -1;
-		z = -1;
-
-		while(x <= 0)
-			x = 10.0*(0.5-(rand()/RAND_MAX));
-		while(y <= 0)
-			y = 10.0*(0.5-(rand()/RAND_MAX));
-		while(z <= 0)
-			z = 10.0*(0.5-(rand()/RAND_MAX));
+		x = (rand()%20);
+		y = (rand()%20);
+		z = (rand()%20);
 
 		fprintf(fp, "%d %d\n", x, y);
 		fprintf(fp, "%d %d\n", y, z);
