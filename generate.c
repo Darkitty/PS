@@ -19,11 +19,11 @@ int generateFile(int nbMult) {
 		z = -1;
 
 		while(x <= 0)
-			x = 10.0*(0.5-((double)rand())/((double)RAND_MAX));
+			x = 10.0*(0.5-(rand()/RAND_MAX));
 		while(y <= 0)
-			y = 10.0*(0.5-((double)rand())/((double)RAND_MAX));
+			y = 10.0*(0.5-(rand()/RAND_MAX));
 		while(z <= 0)
-			z = 10.0*(0.5-((double)rand())/((double)RAND_MAX));
+			z = 10.0*(0.5-(rand()/RAND_MAX));
 
 		fprintf(fp, "%d %d\n", x, y);
 		fprintf(fp, "%d %d\n", y, z);
@@ -38,7 +38,7 @@ int generateFile(int nbMult) {
 void generateMatrice(FILE* fp, int x, int y) {
 	int i, j;
 	double tmp;
-	
+
 	for (i = 0; i < x; i++)
 	{
 		for (j = 0; j < y; j++)
