@@ -9,3 +9,4 @@
 #include <errno.h>
 
 int intMatrice(const char* file, int** matrice1, int** matrice2);
+int compute(int** matrice1, int** matrice2);

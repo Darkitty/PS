@@ -43,3 +43,7 @@ int intMatrice(const char* file, int** matrice1, int** matrice2) {
 
 	return 0;
 }
+
+int compute(int** matrice1, int** matrice2) {
+	return 0;
+}
