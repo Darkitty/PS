@@ -4,8 +4,7 @@
 int main(int argc, char const *argv[])
 {
 	int nbMult;
-	int** matrice1;
-	int** matrice2;
+	char* adrMap;
 
 	if (argc < 2)
 	{
@@ -29,13 +28,13 @@ int main(int argc, char const *argv[])
 	printf("|   Initialisation matrices  |\n");
 	printf("==============================\n");
 
-	intMatrice("matrice.txt", matrice1, matrice2);
+	adrMap = loadFile("matrice.txt");
 
 	printf("==============================\n");
 	printf("|   Calcul des matrices      |\n");
 	printf("==============================\n");
 
-	compute(matrice1, matrice2);
+	compute(adrMap);
 
 	return 0;
 }

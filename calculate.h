@@ -1,6 +1,10 @@
 #define _GNU_SOURCE
 #include <pthread.h>
-#include <sys/time.h>
+#include <sys/mman.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <stdint.h>
+#include <fcntl.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -8,5 +12,5 @@
 #include <sched.h>
 #include <errno.h>
 
-int intMatrice(const char* file, int** matrice1, int** matrice2);
-int compute(int** matrice1, int** matrice2);
+char* loadFile(const char* file);
+int compute(char* adrMap);
