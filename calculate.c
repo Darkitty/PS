@@ -33,31 +33,42 @@ char* loadFile(const char* file) {
 
 int compute(char* adrMap) {
 	char* tmp;
-	char intChar[3], intChar2[3];
-	int nbMult,i;
+	int nbMult;
+	int* nbMatrice;
 
 	tmp = adrMap+2;
-	i = 0;
 
 	nbMult = atoi(adrMap);
 	printf("nbMult : %d\n", nbMult);
 
-	while(*tmp != ' ')
-	{
-		intChar[i] = *tmp;
-		i++;
-		tmp++;
-	}
+	nbMatrice = (int*)malloc(sizeof(int)*nbMult*2);
+	printf("nbMatrice (addr mem) : %p\n", (void*)nbMatrice);
 
-	tmp++;
-	i = 0;
-	while(*tmp != ' ')
-	{
-		intChar2[i] = *tmp;
-		i++;
-		tmp++;
-	}
+	tmp = getSize(nbMatrice, tmp);
 
-	printf("taille matrice 1 : %d - %d\n", atoi(intChar), atoi(intChar2));
+	printf("taille matrice 1 : %d - %d\n", nbMatrice[0], nbMatrice[1]);
 	return 0;
+}
+
+char* getSize(int* nbMatrice, char* data) {
+	int i, j;
+	char intChar[3];
+
+	j = 0;
+
+	for (i = 0; i < 2; i++)
+	{
+		while(*data != ' ')
+		{
+			intChar[j] = *data;
+			j++;
+			data++;
+		}
+		nbMatrice[i] = atoi(intChar);
+
+		data++;
+		j = 0;
+	}
+
+	return data;
 }

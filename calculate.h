@@ -14,3 +14,4 @@
 
 char* loadFile(const char* file);
 int compute(char* adrMap);
+char* getSize(int* nbMatrice, char* data);
