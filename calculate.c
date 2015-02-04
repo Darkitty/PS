@@ -32,9 +32,32 @@ char* loadFile(const char* file) {
 }
 
 int compute(char* adrMap) {
-	int nbMult;
+	char* tmp;
+	char intChar[3], intChar2[3];
+	int nbMult,i;
+
+	tmp = adrMap+2;
+	i = 0;
+
 	nbMult = atoi(adrMap);
 	printf("nbMult : %d\n", nbMult);
-	printf("taille matrice 1 : %c - %c\n", *(adrMap+2), *(adrMap+4));
+
+	while(*tmp != ' ')
+	{
+		intChar[i] = *tmp;
+		i++;
+		tmp++;
+	}
+
+	tmp++;
+	i = 0;
+	while(*tmp != ' ')
+	{
+		intChar2[i] = *tmp;
+		i++;
+		tmp++;
+	}
+
+	printf("taille matrice 1 : %d - %d\n", atoi(intChar), atoi(intChar2));
 	return 0;
 }
