@@ -5,6 +5,10 @@ int generateFile(int nbMult) {
 	int x, y, z;
 	int i;
 
+	x = 0;
+	y = 0;
+	z = 0;
+
 	srand(time(NULL));
 
 	remove("matrice.txt");
@@ -14,9 +18,12 @@ int generateFile(int nbMult) {
 
 	for (i = 0; i < nbMult; i++)
 	{
-		x = (rand()%20);
-		y = (rand()%20);
-		z = (rand()%20);
+		while(x <= 0)
+			x = (rand()%20);
+		while(y <= 0)
+			y = (rand()%20);
+		while(z <= 0)
+			z = (rand()%20);
 
 		fprintf(fp, "%d %d\n", x, y);
 		fprintf(fp, "%d %d\n", y, z);
