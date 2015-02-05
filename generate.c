@@ -27,7 +27,6 @@ int generateFile(int nbMult) {
 
 		fprintf(fp, "%d %d\n", x, y);
 		fprintf(fp, "%d %d\n", y, z);
-
 		generateMatrice(fp, x, y);
 		generateMatrice(fp, y, z);
 	}

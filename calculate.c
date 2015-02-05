@@ -47,6 +47,7 @@ int compute(char* adrMap) {
 	tmp = getSize(nbMatrice, tmp);
 
 	printf("taille matrice 1 : %d - %d\n", nbMatrice[0], nbMatrice[1]);
+	printf("taille matrice 2 : %d - %d\n", nbMatrice[2], nbMatrice[3]);
 	return 0;
 }
 
@@ -56,9 +57,9 @@ char* getSize(int* nbMatrice, char* data) {
 
 	j = 0;
 
-	for (i = 0; i < 2; i++)
+	for (i = 0; i < 4; i++)
 	{
-		while(*data != ' ')
+		while((*data != ' ')&&(*data != '\n'))
 		{
 			intChar[j] = *data;
 			j++;
