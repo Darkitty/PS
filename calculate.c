@@ -18,7 +18,7 @@ char* loadFile(const char* file) {
 		exit(-1);
 	}
 	size = st.st_size;
-	printf("taille du fichier : %d octets\n",size);
+	printf("taille du fichier : %d octets\n",(int)size);
 	adrMap = (char*)mmap(NULL, size, PROT_READ, MAP_SHARED, fd, 0);
 	if (*adrMap == -1)
 	{
