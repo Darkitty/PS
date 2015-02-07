@@ -52,7 +52,11 @@ int compute(char* adrMap) {
 
 	matrice1 = initMatrice(&matrice1, nbMatrice[0], nbMatrice[1]);
 
-	printf("Matrice 1 : %s\n", "toto");
+	printf("Matrice 1 : %p\n", (void*)matrice1);
+
+	freeMatrice(matrice1, nbMatrice[0]);
+	free(nbMatrice);
+
 	return 0;
 }
 
@@ -102,4 +106,13 @@ char* getMatrice(char* data, int** matrice, int x, int y) {
 		}
 	}
 	return data;
+}
+
+void freeMatrice(int** matrice, int x) {
+	int i;
+	for (i = 0; i < x; i++)
+	{
+		free(matrice[i]);
+	}
+	free(matrice);
 }
