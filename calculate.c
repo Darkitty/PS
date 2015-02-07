@@ -35,7 +35,7 @@ int compute(char* adrMap) {
 	char* tmp;
 	int nbMult;
 	int* nbMatrice;
-	int** matrice1;
+	float** matrice1;
 
 	tmp = adrMap+2;
 
@@ -53,6 +53,7 @@ int compute(char* adrMap) {
 	matrice1 = initMatrice(&matrice1, nbMatrice[0], nbMatrice[1]);
 
 	printf("Matrice 1 : %p\n", (void*)matrice1);
+	tmp = getMatrice(tmp, matrice1, nbMatrice[0], nbMatrice[1]);
 
 	freeMatrice(matrice1, nbMatrice[0]);
 	free(nbMatrice);
@@ -84,31 +85,37 @@ char* getSize(int* nbMatrice, char* data) {
 	return data;
 }
 
-int** initMatrice(int*** matrice, int x, int y) {
+float** initMatrice(float*** matrice, int x, int y) {
 	int i;
-	*matrice = (int**)malloc(sizeof(int)*x);
+	*matrice = (float**)malloc(sizeof(float)*x);
 	for (i = 0; i < x; i++)
 	{
-		*(*(matrice)+i) = (int*)malloc(sizeof(int)*y);
+		*(*(matrice)+i) = (float*)malloc(sizeof(float)*y);
 
 	}
 	return *matrice;
 }
 
-char* getMatrice(char* data, int** matrice, int x, int y) {
+char* getMatrice(char* data, float** matrice, int x, int y) {
 	int i, j;
 	for (i = 0; i < x; i++)
 	{
 		for (j = 0; j < y; j++)
 		{
-			matrice[i][j] = *data;
-			data++;
+			printf("%s\n", data);
+			sscanf(data, "%f", &matrice[i][j]);
+			printf("Matrice (%d,%d) : %.1f\n", i, j, matrice[i][j]);
+			if (matrice[i][j] < 0)
+				data += 5;
+			else
+				data += 4;
 		}
+		data++;
 	}
 	return data;
 }
 
-void freeMatrice(int** matrice, int x) {
+void freeMatrice(float** matrice, int x) {
 	int i;
 	for (i = 0; i < x; i++)
 	{
