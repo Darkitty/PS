@@ -52,8 +52,6 @@ int compute(char* adrMap) {
 
 	matrice1 = initMatrice(&matrice1, nbMatrice[0], nbMatrice[1]);
 
-	/*tmp = getMatrice(tmp, matrice1, nbMatrice[0], nbMatrice[1]);*/
-
 	printf("Matrice 1 : %s\n", "toto");
 	return 0;
 }
@@ -73,6 +71,7 @@ char* getSize(int* nbMatrice, char* data) {
 			data++;
 		}
 		nbMatrice[i] = atoi(intChar);
+		intChar[1] = '\0';
 
 		data++;
 		j = 0;
@@ -84,9 +83,9 @@ char* getSize(int* nbMatrice, char* data) {
 int** initMatrice(int*** matrice, int x, int y) {
 	int i;
 	*matrice = (int**)malloc(sizeof(int)*x);
-	for (i = 0; i < y; i++)
+	for (i = 0; i < x; i++)
 	{
-		**(matrice+i) = (int*)malloc(sizeof(int)*y);
+		*(*(matrice)+i) = (int*)malloc(sizeof(int)*y);
 
 	}
 	return *matrice;
