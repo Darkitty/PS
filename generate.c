@@ -30,7 +30,7 @@ int generateFile(int nbMult) {
 	if (file == NULL)
 	{
 		perror("open file");
-		exit(EXIT_FAILURE);
+		return(EXIT_FAILURE);
 	}
 
 	/* Inscription du nombre de multiplication à faire */
