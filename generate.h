@@ -9,4 +9,4 @@
 #include <time.h>
 
 int generateFile(int nbMult);
-void generateMatrice(FILE* fp, int x, int y);
+void generateMatrice(FILE* file, int x, int y);
