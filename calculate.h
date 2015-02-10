@@ -21,7 +21,7 @@ typedef struct
 
 char* loadFile(const char* file);
 int compute(char* adrMap);
-char* getSize(int* nbMatrice, char* data, int* offset);
+void getSize(int* dimMatrice, char* data, int* offset);
 float** initMatrice(float*** matrice, int x, int y);
 char* getMatrice(char* data, float** matrice, int x, int y);
 void freeMatrice(float** matrice, int x);
@@ -31,3 +31,5 @@ void pastLine(char* file, int* offset, int x);
 void nextColumn(char* file, int* offset, int x);
 
 int getRelativeOffset(char * fmap, int offset, int n);
+
+void nextNbLines(char * fmap, int * offset, int nblines);
