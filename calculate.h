@@ -33,3 +33,5 @@ void nextColumn(char* file, int* offset, int x);
 int getRelativeOffset(char * fmap, int offset, int n);
 
 void nextNbLines(char * fmap, int * offset, int nblines);
+
+void nextValue(char* file, int* offset);

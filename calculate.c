@@ -35,36 +35,44 @@ int compute(char* adrMap) {
 	int offset, nbCouple;
 	float** matrice1;
 
-	int c, i, j;
+	int c, i, j, k;
 
 	sscanf(adrMap, "%d%n", &nbCouple, &offset);
 
-	for (c = 0; c < nbCouple; c++)
+
+	for (c = 0; c < (nbCouple*2); c++)
 	{
 		int dimMatrice[4];
+		int offset_m1;
+		int offset_m2;
+
 		getSize(dimMatrice, adrMap, &offset);
 
 		matrice1 = initMatrice(&matrice1, dimMatrice[0], dimMatrice[1]);
-		for (i = 0; i < dimMatrice[0]; i++)
+
+		offset_m2 = offset;
+		nextNbLines(adrMap, &offset_m2, dimMatrice[0]);
+
+		for (i = 0; i < dimMatrice[1]; i++)
 		{
-			int offset_m1;
-			int offset_m2;
-
 			offset_m1 = offset;
-			offset_m2 = offset;
 
-			nextNbLines(adrMap, &offset_m1, i);
-
-			nextNbLines(adrMap, &offset_m2, dimMatrice[0]);
-			offset_m2 += getRelativeOffset(adrMap, offset_m2, i);
-			printf("-----------------\n");
 			for (j = 0; j < dimMatrice[1]; j++)
 			{
-				printf("%d\n", i);
-				printf("Value : %.1f --- %.1f\n", getValue(adrMap, &offset_m1), getValue(adrMap, &offset_m2));
-				printf("Offset 1 : %d - Offset 2 : %d\n\n", offset_m1, offset_m2);
-				
 				offset_m2 += getRelativeOffset(adrMap, offset_m2, i);
+				printf("-----------------\n");
+
+				for (k = 0; k < dimMatrice[0]; k++)
+				{
+					printf("Value : %.1f --- %.1f\n", getValue(adrMap, &offset_m1), getValue(adrMap, &offset_m2));
+
+					nextValue(adrMap, &offset_m1);
+
+					printf("offset 2 = %d\n", offset_m2);
+					nextNbLines(adrMap, &offset_m2, 1);
+					printf("offset 2 = %d\n", offset_m2);
+					offset_m2 += getRelativeOffset(adrMap, offset_m2, i);
+				}
 			}
 		}
 	}
@@ -106,6 +114,14 @@ void freeMatrice(float** matrice, int x) {
 
 /*=============================================*/
 float getValue(char* file, int* offset) {
+	float data;
+
+	sscanf((file + *offset), "%f", &data);
+
+	return data;
+}
+
+void nextValue(char* file, int* offset) {
 	int decalage;
 	float data;
 
@@ -113,8 +129,6 @@ float getValue(char* file, int* offset) {
 
 	sscanf((file + *offset), "%f%n", &data, &decalage);
 	*offset += decalage;
-
-	return data;
 }
 
 void pastLine(char* file, int* offset, int x) {
@@ -140,8 +154,8 @@ void nextNbLines(char * fmap, int * offset, int nblines)
 	for (i = 0; i <= nblines; i++)
 	{
 		char * cr;
-		cr = strchr(fmap + *offset,'\n');
-		*offset += (cr-(fmap + *offset)+1);
+  		cr = strchr(fmap + *offset,'\n');
+  		*offset += (cr-(fmap + *offset)+1);
 	}
 }
 
