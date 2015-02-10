@@ -35,9 +35,12 @@ int compute(char* adrMap) {
 	char* tmp;
 	int nbMult;
 	int* nbMatrice;
+	int offset, offset_2;
 	float** matrice1;
+	int i;
 
 	tmp = adrMap+2;
+	offset = 0;
 
 	nbMult = atoi(adrMap);
 	printf("nbMult : %d\n", nbMult);
@@ -45,7 +48,7 @@ int compute(char* adrMap) {
 	nbMatrice = (int*)malloc(sizeof(int)*nbMult*2);
 	printf("nbMatrice (addr mem) : %p\n", (void*)nbMatrice);
 
-	tmp = getSize(nbMatrice, tmp);
+	getSize(nbMatrice, tmp, &offset);
 
 	printf("taille matrice 1 : %d - %d\n", nbMatrice[0], nbMatrice[1]);
 	printf("taille matrice 2 : %d - %d\n", nbMatrice[2], nbMatrice[3]);
@@ -53,7 +56,23 @@ int compute(char* adrMap) {
 	matrice1 = initMatrice(&matrice1, nbMatrice[0], nbMatrice[1]);
 
 	printf("Matrice 1 : %p\n", (void*)matrice1);
-	tmp = getMatrice(tmp, matrice1, nbMatrice[0], nbMatrice[1]);
+
+	offset += 2;
+	for (i = 0; i < nbMatrice[1]; i++)
+	{
+		printf("Offset : %d - Value %.1f\n", offset, getValue(adrMap, &offset));
+	}
+
+	offset_2 = offset;
+	printf("-------------------------\n");
+	pastLine(adrMap, &offset_2, nbMatrice[0]);
+	nextColumn(adrMap, &offset_2, 6);
+	for (i = 0; i < nbMatrice[2]; i++)
+	{
+		nextColumn(adrMap, &offset_2, 3);
+		printf("Offset : %d - Value %.1f\n", offset_2, getValue(adrMap, &offset_2));
+		pastLine(adrMap, &offset_2, 1);
+	}
 
 	freeMatrice(matrice1, nbMatrice[0]);
 	free(nbMatrice);
@@ -61,27 +80,16 @@ int compute(char* adrMap) {
 	return 0;
 }
 
-char* getSize(int* nbMatrice, char* data) {
-	int i, j;
-	char intChar[3];
+char* getSize(int* nbMatrice, char* data, int* offset) {
+	int decalage;
+	decalage = 0;
 
-	j = 0;
+	sscanf((data + *offset),"%d %d%n", &nbMatrice[0], &nbMatrice[1], &decalage );
+	*offset += decalage;
 
-	for (i = 0; i < 4; i++)
-	{
-		while((*data != ' ')&&(*data != '\n'))
-		{
-			intChar[j] = *data;
-			j++;
-			data++;
-		}
-		nbMatrice[i] = atoi(intChar);
-		intChar[1] = '\0';
-
-		data++;
-		j = 0;
-	}
-
+	sscanf((data + *offset),"%d %d%n", &nbMatrice[2], &nbMatrice[3], &decalage );
+	*offset += decalage;
+	
 	return data;
 }
 
@@ -96,25 +104,6 @@ float** initMatrice(float*** matrice, int x, int y) {
 	return *matrice;
 }
 
-char* getMatrice(char* data, float** matrice, int x, int y) {
-	int i, j;
-	for (i = 0; i < x; i++)
-	{
-		for (j = 0; j < y; j++)
-		{
-			printf("%s\n", data);
-			sscanf(data, "%f", &matrice[i][j]);
-			printf("Matrice (%d,%d) : %.1f\n", i, j, matrice[i][j]);
-			if (matrice[i][j] < 0)
-				data += 5;
-			else
-				data += 4;
-		}
-		data++;
-	}
-	return data;
-}
-
 void freeMatrice(float** matrice, int x) {
 	int i;
 	for (i = 0; i < x; i++)
@@ -122,4 +111,70 @@ void freeMatrice(float** matrice, int x) {
 		free(matrice[i]);
 	}
 	free(matrice);
+}
+
+/*=============================================*/
+float getValue(char* file, int* offset) {
+	int decalage;
+	float data;
+
+	decalage = 0;
+
+	sscanf((file + *offset), "%f%n", &data, &decalage);
+	*offset += decalage;
+
+	return data;
+}
+
+void pastLine(char* file, int* offset, int x) {
+	int i, j;
+	char* tmp;
+
+	tmp = file + *offset;
+	j = 0;
+
+	for (i = 0; i < x; i++)
+	{
+		while(tmp[j] != '\n') {
+			j++;
+		}
+		*offset += j;
+		tmp++;
+	}
+}
+
+void nextColumn(char* file, int* offset, int x) {
+	int i, j, cmp;
+	char* tmp;
+
+	tmp = file + *offset;
+
+	for (i = 0; i < (x-1); i++)
+	{
+		while(tmp[j] != ' ') {
+			if(tmp[j] == '-')
+				cmp++;
+			j++;
+		}
+		*offset = *offset + j;
+		j = 0;
+		cmp = 0;
+	}
+}
+
+int getRelativeOffset(char * fmap, int offset, int n)
+{
+	int sv_offset = offset;
+
+	int shift = 0;
+	float data;
+	int i;
+
+	for (i = 0; i < n; i++)
+	{
+		sscanf( (fmap + offset), "%f%n", &data, &shift );
+		offset += shift;
+	}
+
+	return  offset - sv_offset;
 }
