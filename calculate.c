@@ -46,36 +46,47 @@ int compute(char* adrMap) {
 		int offset_m1;
 		int offset_m2;
 		int pastLines;
+		int cmp;
+		float value;
+
+		cmp = 0;
 
 		getSize(dimMatrice, adrMap, &offset);
 		offset_m1 = offset;
 
 		matrice1 = initMatrice(&matrice1, dimMatrice[0], dimMatrice[1]);
 
-		pastLines = offset;
-		nextNbLines(adrMap, &pastLines, dimMatrice[0]);
 		printf("Taille m1 : %d - %d\n", dimMatrice[0], dimMatrice[1]);
 		printf("Taille m2 : %d - %d\n", dimMatrice[2], dimMatrice[3]);
+
+		pastLines = offset;
+		nextNbLines(adrMap, &pastLines, dimMatrice[0]);
 		offset_m2 = pastLines;
 
-		for (i = 0; i < dimMatrice[0]; i++)
+		for (i = 0; i < dimMatrice[1]; i++)
 		{
 			offset_m1 = offset;
-			for (j = 0; j < dimMatrice[1]; j++)
+			for (j = 0; j < dimMatrice[0]; j++)
 			{
+				value = 0.0;
 				offset_m2 = pastLines;
 				offset_m2 += getRelativeOffset(adrMap, offset_m2, i);
+				printf("offset ja%d\n", offset_m2);
 				for (k = 0; k < dimMatrice[1]; k++)
 				{
 					printf("Value : %.1f --- %.1f\n", getValue(adrMap, &offset_m1), getValue(adrMap, &offset_m2));
-					printf("Coefficient : %.2f\n", getValue(adrMap, &offset_m1) * getValue(adrMap, &offset_m2));
+					value += getValue(adrMap, &offset_m1) * getValue(adrMap, &offset_m2);
 
 					nextValue(adrMap, &offset_m1);
 
 					nextNbLines(adrMap, &offset_m2, 0);
 					offset_m2 += getRelativeOffset(adrMap ,offset_m2, i);
-				}		
+				}
+				printf("Value : %.2f\n", value);
+				cmp++;
+				printf("-----------------------\n");		
 			}
+			printf("taille : %d\n", cmp);
 		}
 	}
 

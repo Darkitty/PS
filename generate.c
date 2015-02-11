@@ -40,11 +40,14 @@ int generateFile(int nbMult) {
 	{
 		/* Génération des tailles pour les matrices */
 		while(x <= 0)
-			x = (rand()%20);
+			x = (rand()%10);
 		while(y <= 0)
-			y = (rand()%20);
+			y = (rand()%10);
 		while(z <= 0)
-			z = (rand()%20);
+			z = (rand()%10);
+
+		y += (x - y) + 1;
+		z += (y - z) + 1;
 
 		/* Inscription des tailles dans le fichier */
 		fprintf(file, "%d %d\n", x, y);

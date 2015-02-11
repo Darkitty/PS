@@ -14,11 +14,11 @@ int main(int argc, char const *argv[])
 
 	sscanf(argv[1],"%u",(unsigned int*)&nbMult);
 	
-	/* if (generateFile(nbMult) != 0)
+	if (generateFile(nbMult) != 0)
 	{
 		printf("Erreur lors de la generation du fichier");
 		return(EXIT_FAILURE);
-	} */
+	}
 
 	printf("==============================\n");
 	printf("|Generation du fichier reussi|\n");
