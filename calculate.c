@@ -38,6 +38,7 @@ int compute(char* adrMap) {
 
 	sscanf(adrMap, "%d%n", &nbCouple, &offset);
 
+	remove("resultat.txt");
 
 	for (c = 0; c < (nbCouple); c++)
 	{
@@ -95,7 +96,6 @@ int compute(char* adrMap) {
 				offset_m2 += getRelativeOffset(adrMap, offset_m2, i);
 				for (k = 0; k < dimMatrice[1]; k++)
 				{
-					printf("Value : %.1f --- %.1f\n", getValue(adrMap, &offset_m1), getValue(adrMap, &offset_m2));
 					value += getValue(adrMap, &offset_m1) * getValue(adrMap, &offset_m2);
 
 					nextValue(adrMap, &offset_m1);
@@ -103,12 +103,11 @@ int compute(char* adrMap) {
 					pastLine(adrMap, &offset_m2, 0);
 					offset_m2 += getRelativeOffset(adrMap ,offset_m2, i);
 				}
-				printf("Value : %.2f\n", value);
-				fprintf(file, "%.2f ", value);
-				printf("-----------------------\n");		
+				fprintf(file, "%.2f ", value);		
 			}
 			fprintf(file, "\n");
 		}
+		printf("-----------------------\n");
 		fprintf(file, "---------------------\n");
 	}
 

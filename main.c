@@ -1,5 +1,6 @@
 #include "generate.h"
 #include "calculate.h"
+#include "show.h"
 
 int main(int argc, char const *argv[])
 {
@@ -35,6 +36,12 @@ int main(int argc, char const *argv[])
 	printf("==============================\n");
 
 	compute(adrMap);
+
+	printf("==============================\n");
+	printf("|   Matrices resultatntes    |\n");
+	printf("==============================\n");
+
+	show();
 
 	return 0;
 }
