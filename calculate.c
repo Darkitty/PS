@@ -33,7 +33,6 @@ char* loadFile(const char* file) {
 
 int compute(char* adrMap) {
 	int offset, nbCouple;
-	float** matrice1;
 
 	int c, i, j, k;
 
@@ -46,21 +45,42 @@ int compute(char* adrMap) {
 		int offset_m1;
 		int offset_m2;
 		int pastLines;
-		int cmp;
 		float value;
+		float** resultat;
+		FILE* file;
 
-		cmp = 0;
+		/* Thread attributes */
+		/*int cpuNumber;
+		pthread_t* threads;
+		pthread_attr_t attr;
+		cpu_set_t cpus;*/
+		/* ----------------- */
+
+		/* ----------------- */
+		/*cpuNumber = sysconf(_SC_NPROCESSORS_ONLN);
+		threads = (pthread_t*)malloc(sizeof(pthread_t));
+		pthread_attr_init(&attr);*/
+		/* ----------------- */
+
+		file = fopen("resultat.txt","a");
+		if (file == NULL)
+		{
+			perror("open file");
+			return(EXIT_FAILURE);
+		}
 
 		getSize(dimMatrice, adrMap, &offset);
 		offset_m1 = offset;
 
-		matrice1 = initMatrice(&matrice1, dimMatrice[0], dimMatrice[1]);
+		resultat = initMatrice(&resultat, dimMatrice[0], dimMatrice[3]);
 
 		printf("Taille m1 : %d - %d\n", dimMatrice[0], dimMatrice[1]);
 		printf("Taille m2 : %d - %d\n", dimMatrice[2], dimMatrice[3]);
 
+		fprintf(file, "%d %d\n", dimMatrice[0], dimMatrice[3]);
+
 		pastLines = offset;
-		nextNbLines(adrMap, &pastLines, dimMatrice[0]);
+		pastLine(adrMap, &pastLines, dimMatrice[0]);
 		offset_m2 = pastLines;
 
 		for (i = 0; i < dimMatrice[1]; i++)
@@ -71,7 +91,6 @@ int compute(char* adrMap) {
 				value = 0.0;
 				offset_m2 = pastLines;
 				offset_m2 += getRelativeOffset(adrMap, offset_m2, i);
-				printf("offset ja%d\n", offset_m2);
 				for (k = 0; k < dimMatrice[1]; k++)
 				{
 					printf("Value : %.1f --- %.1f\n", getValue(adrMap, &offset_m1), getValue(adrMap, &offset_m2));
@@ -79,19 +98,20 @@ int compute(char* adrMap) {
 
 					nextValue(adrMap, &offset_m1);
 
-					nextNbLines(adrMap, &offset_m2, 0);
+					pastLine(adrMap, &offset_m2, 0);
 					offset_m2 += getRelativeOffset(adrMap ,offset_m2, i);
 				}
 				printf("Value : %.2f\n", value);
-				cmp++;
+				fprintf(file, "%.2f ", value);
 				printf("-----------------------\n");		
 			}
-			printf("taille : %d\n", cmp);
+			fprintf(file, "\n");
 		}
+		fprintf(file, "---------------------\n");
+		fclose(file);
 	}
 
 	return 0;
-
 }
 
 void getSize(int* dimMatrice, char* data, int* offset) {
@@ -144,47 +164,30 @@ void nextValue(char* file, int* offset) {
 	*offset += decalage;
 }
 
-void pastLine(char* file, int* offset, int x) {
-	int i, j;
-	char* tmp;
-
-	tmp = file + *offset;
-	j = 0;
-
-	for (i = 0; i < x; i++)
-	{
-		while(tmp[j] != '\n') {
-			j++;
-		}
-		*offset += j;
-		tmp++;
-	}
-}
-
-void nextNbLines(char * fmap, int * offset, int nblines)
+void pastLine(char * file, int * offset, int x)
 {
 	int i;
-	for (i = 0; i <= nblines; i++)
+	for (i = 0; i <= x; i++)
 	{
 		char * cr;
-  		cr = strchr(fmap + *offset,'\n');
-  		*offset += (cr-(fmap + *offset)+1);
+  		cr = strchr(file + *offset,'\n');
+  		*offset += (cr-(file + *offset)+1);
 	}
 }
 
-int getRelativeOffset(char * fmap, int offset, int n)
+int getRelativeOffset(char * file, int offset, int n)
 {
-	int sv_offset = offset;
+	int tmp = offset;
 
-	int shift = 0;
-	float data;
+	int decalage = 0;
+	float null;
 	int i;
 
 	for (i = 0; i < n; i++)
 	{
-		sscanf( (fmap + offset), "%f%n", &data, &shift );
-		offset += shift;
+		sscanf((file + offset), "%f%n", &null, &decalage );
+		offset += decalage;
 	}
 
-	return  offset - sv_offset;
+	return  (offset - tmp);
 }
