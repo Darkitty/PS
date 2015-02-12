@@ -83,6 +83,8 @@ int compute(char* adrMap) {
 		pastLine(adrMap, &pastLines, dimMatrice[0]);
 		offset_m2 = pastLines;
 
+		pastLine(adrMap, &offset, dimMatrice[0] + dimMatrice[2]);
+
 		for (i = 0; i < dimMatrice[1]; i++)
 		{
 			offset_m1 = offset;
@@ -108,7 +110,6 @@ int compute(char* adrMap) {
 			fprintf(file, "\n");
 		}
 		fprintf(file, "---------------------\n");
-		fclose(file);
 	}
 
 	return 0;

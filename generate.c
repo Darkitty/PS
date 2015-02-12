@@ -17,10 +17,6 @@ int generateFile(int nbMult) {
 	int x, y, z;
 	int i;
 
-	x = 0;
-	y = 0;
-	z = 0;
-
 	/* Permet une génération 'plus' aléatoire */
 	srand(time(NULL));
 
@@ -38,6 +34,9 @@ int generateFile(int nbMult) {
 
 	for (i = 0; i < nbMult; i++)
 	{
+		x = 0;
+		y = 0;
+		z = 0;
 		/* Génération des tailles pour les matrices */
 		while(x <= 0)
 			x = (rand()%10);
