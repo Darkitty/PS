@@ -15,9 +15,13 @@
 typedef struct 
 {
 	char* adrMap;
-	int offset_1;
-	int offset_2;
-} thread_matrice;
+	int* dimMatrice;
+	int offset;
+	int offset_m1;
+	int offset_m2;
+	int pastLines;
+	FILE* file;
+} thread_matrice_t;
 
 char* loadFile(const char* file);
 int compute(char* adrMap);
@@ -33,3 +37,5 @@ void nextColumn(char* file, int* offset, int x);
 int getRelativeOffset(char * fmap, int offset, int n);
 
 void nextValue(char* file, int* offset);
+
+int threadCals(void* threadData);

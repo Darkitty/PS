@@ -34,7 +34,7 @@ char* loadFile(const char* file) {
 int compute(char* adrMap) {
 	int offset, nbCouple;
 
-	int c, i, j, k;
+	int c;
 
 	sscanf(adrMap, "%d%n", &nbCouple, &offset);
 
@@ -43,24 +43,24 @@ int compute(char* adrMap) {
 	for (c = 0; c < (nbCouple); c++)
 	{
 		int dimMatrice[4];
+		int pastLines;
 		int offset_m1;
 		int offset_m2;
-		int pastLines;
-		float value;
 		float** resultat;
 		FILE* file;
 
 		/* Thread attributes */
-		/*int cpuNumber;
+		int cpuNumber;
 		pthread_t* threads;
 		pthread_attr_t attr;
-		cpu_set_t cpus;*/
+		cpu_set_t cpus;
+		thread_matrice_t threadData;
 		/* ----------------- */
 
 		/* ----------------- */
-		/*cpuNumber = sysconf(_SC_NPROCESSORS_ONLN);
+		cpuNumber = sysconf(_SC_NPROCESSORS_ONLN);
 		threads = (pthread_t*)malloc(sizeof(pthread_t));
-		pthread_attr_init(&attr);*/
+		pthread_attr_init(&attr);
 		/* ----------------- */
 
 		file = fopen("resultat.txt","a");
@@ -84,32 +84,25 @@ int compute(char* adrMap) {
 		pastLine(adrMap, &pastLines, dimMatrice[0]);
 		offset_m2 = pastLines;
 
+		threadData.offset = offset;
+		threadData.offset_m1= offset_m1;
+		threadData.offset_m2 = offset_m2;
+		threadData.pastLines = pastLines;
+		threadData.adrMap = adrMap;
+		threadData.file = file;
+
+		if(pthread_create( threads, NULL, (void *)threadCals, (void *)&threadData) != 0)
+		{
+			printf("Erreur pthread_create\n");
+			exit(-1);
+		}
+
 		pastLine(adrMap, &offset, dimMatrice[0] + dimMatrice[2]);
 
-		for (i = 0; i < dimMatrice[1]; i++)
-		{
-			offset_m1 = offset;
-			for (j = 0; j < dimMatrice[0]; j++)
-			{
-				value = 0.0;
-				offset_m2 = pastLines;
-				offset_m2 += getRelativeOffset(adrMap, offset_m2, i);
-				for (k = 0; k < dimMatrice[1]; k++)
-				{
-					value += getValue(adrMap, &offset_m1) * getValue(adrMap, &offset_m2);
-
-					nextValue(adrMap, &offset_m1);
-
-					pastLine(adrMap, &offset_m2, 0);
-					offset_m2 += getRelativeOffset(adrMap ,offset_m2, i);
-				}
-				fprintf(file, "%.2f ", value);		
-			}
-			fprintf(file, "\n");
-		}
+		
 		printf("-----------------------\n");
 		fprintf(file, "---------------------\n");
-	fclose(file);
+		fclose(file);
 	}
 
 	return 0;
@@ -191,4 +184,52 @@ int getRelativeOffset(char * file, int offset, int n)
 	}
 
 	return  (offset - tmp);
+}
+
+/* ------------------------------------------- */
+int threadCals(void* threadData) {
+	printf("izheiogzoh\n");
+	int i, j, k;
+	float value;
+
+	thread_matrice_t* data;
+	int offset;
+	int offset_m1;
+	int offset_m2;
+	int pastLines;
+	char* adrMap;
+	int* dimMatrice;
+	FILE* file;
+
+	data = (thread_matrice_t*)threadData;
+
+	offset = data->offset;
+	offset_m1 = data->offset_m1;
+	offset_m2 = data->offset_m2;
+	adrMap = data->adrMap;
+	file = data->file;
+	dimMatrice = data->dimMatrice;
+	pastLines = data->pastLines;
+
+	for (i = 0; i < dimMatrice[1]; i++)
+	{
+		offset_m1 = offset;
+		for (j = 0; j < dimMatrice[0]; j++)
+		{
+			value = 0.0;
+			offset_m2 = pastLines;
+			offset_m2 += getRelativeOffset(adrMap, offset_m2, i);
+			for (k = 0; k < dimMatrice[1]; k++)
+			{
+				value += getValue(adrMap, &offset_m1) * getValue(adrMap, &offset_m2);
+					nextValue(adrMap, &offset_m1);
+					pastLine(adrMap, &offset_m2, 0);
+				offset_m2 += getRelativeOffset(adrMap ,offset_m2, i);
+			}
+			fprintf(file, "%.2f ", value);	
+			printf("Value %.2f\n", value);	
+		}
+		fprintf(file, "\n");
+	}
+	return 0;
 }
