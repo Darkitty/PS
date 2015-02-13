@@ -109,6 +109,7 @@ int compute(char* adrMap) {
 		}
 		printf("-----------------------\n");
 		fprintf(file, "---------------------\n");
+	fclose(file);
 	}
 
 	return 0;
