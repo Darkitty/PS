@@ -1,5 +1,12 @@
+/**
+* \file generate.c
+* \author Nicolas Le Gall
+* \date 09/02/2015
+* \brief Permet l'affichage du fichier contenant les matrices resultantes
+*/
 #include "show.h"
 
+/* Affiche le contenu des matrices resultantes */
 int show() {
 	FILE* file;
 	char line[80];

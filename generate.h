@@ -1,3 +1,6 @@
+#ifndef GENERATE_H
+#define GENERATE_H
+
 #include <pthread.h>
 #include <sys/time.h>
 #include <stdio.h>
@@ -10,3 +13,5 @@
 
 int generateFile(int nbMult);
 void generateMatrice(FILE* file, int x, int y);
+
+#endif

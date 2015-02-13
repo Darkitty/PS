@@ -38,7 +38,7 @@ int main(int argc, char const *argv[])
 	compute(adrMap);
 
 	printf("==============================\n");
-	printf("|   Matrices resultatntes    |\n");
+	printf("|   Matrices resultantes     |\n");
 	printf("==============================\n");
 
 	show();
