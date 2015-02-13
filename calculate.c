@@ -4,22 +4,24 @@
 * \date 09/02/2015
 * \brief Permet le calcul et la gestion des matrices
 */
+
+#include "define.h"
 #include "calculate.h"
 
 /* Permet de mapper le fichier dans la memoire */
-char* loadFile(const char* file_name) {
+char* loadFile() {
 	int file;
 	char* adrMap;
 	struct stat st;
 	size_t size;
 
-	file = open(file_name, O_RDONLY);
+	file = open(FILE_IN, O_RDONLY);
 	if(file == -1)
 	{
 		perror("open");
 		exit(-1);
 	}
-	if(stat("matrice.txt", &st))
+	if(stat(FILE_IN, &st))
 	{
 		perror("stat");
 		exit(-1);
@@ -54,7 +56,7 @@ int compute(char* adrMap) {
 	sscanf(adrMap, "%d%n", &nbCouple, &offset);
 
 	/* On supprime l'ancien fichier resultat */
-	remove("resultat.txt");
+	remove(FILE_OUT);
 
 	for (c = 0; c < (nbCouple); c++)
 	{
@@ -65,7 +67,7 @@ int compute(char* adrMap) {
 		int pastLines;
 		float value;
 
-		file = fopen("resultat.txt","a");
+		file = fopen(FILE_OUT,"a");
 		if (file == NULL)
 		{
 			perror("open file");

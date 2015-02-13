@@ -29,7 +29,7 @@ int main(int argc, char const *argv[])
 	printf("|   Initialisation matrices  |\n");
 	printf("==============================\n");
 
-	adrMap = loadFile("matrice.txt");
+	adrMap = loadFile();
 
 	printf("==============================\n");
 	printf("|   Calcul des matrices      |\n");

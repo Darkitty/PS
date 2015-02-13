@@ -24,7 +24,7 @@ typedef struct
 } thread_matrice;
 
 /* Fonction fichier */
-char* loadFile(const char* file_name);
+char* loadFile();
 int getFileSize(const char* file_name);
 
 /* Calcul */

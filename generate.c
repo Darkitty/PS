@@ -5,6 +5,7 @@
 * \brief Permet la génération d'un fichier contenant les matrices
 */
 
+#include "define.h"
 #include "generate.h"
 
 /**
@@ -21,8 +22,8 @@ int generateFile(int nbMult) {
 	srand(time(NULL));
 
 	/* Supprime le fichier si il existe avant de le créer */
-	remove("matrice.txt");
-	file = fopen("matrice.txt","a");
+	remove(FILE_IN);
+	file = fopen(FILE_IN,"a");
 	if (file == NULL)
 	{
 		perror("open file");

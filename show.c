@@ -4,6 +4,8 @@
 * \date 09/02/2015
 * \brief Permet l'affichage du fichier contenant les matrices resultantes
 */
+
+#include "define.h"
 #include "show.h"
 
 /* Affiche le contenu des matrices resultantes */
@@ -11,7 +13,7 @@ int show() {
 	FILE* file;
 	char line[80];
 
-	file = fopen("resultat.txt","r");
+	file = fopen(FILE_OUT,"r");
 	if (file == NULL)
 	{
 		perror("open file");
