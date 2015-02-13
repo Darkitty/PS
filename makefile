@@ -10,17 +10,17 @@ SRC_SHW = show.c
 SRC_CALC = calculate.c testCalculate.c
 SRC_MAIN = generate.c show.c calculate.c main.c
 
-# Compilation for Cell and its tests
+# Compilation for main executable
 main: generate.c show.c calculate.c main.c generate.h calculate.h show.h define.h
 	$(CC) $(SRC_MAIN) -o main.out $(CFLAGS)
 
-# Compilation for Pile and its tests
+# Compilation generate
 generate: generate.c generate.h define.h
 	$(CC) -o generate $(SRC_GEN) $(CFLAGS)
-# Compilation for Pile and its tests
+# Compilation show
 show: show.c show.h define.h
 	$(CC) -o show $(SRC_GEN) $(CFLAGS)
-# Compilation for List and its tests
+# Compilation calculate
 calculate: calculate.c testCalculate.c calculate.h define.h
 	$(CC) -o calculate $(SRC_CALC) $(CFLAGS)
 
