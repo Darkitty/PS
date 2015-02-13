@@ -1,13 +1,13 @@
 #include "calculate.h"
 
-char* loadFile(const char* file) {
-	int fd;
+char* loadFile(const char* file_name) {
+	int file;
 	char* adrMap;
 	struct stat st;
 	size_t size;
 
-	fd = open(file, O_RDONLY);
-	if(fd == -1)
+	file = open(file_name, O_RDONLY);
+	if(file == -1)
 	{
 		perror("open");
 		exit(-1);
@@ -17,16 +17,19 @@ char* loadFile(const char* file) {
 		perror("stat");
 		exit(-1);
 	}
+
 	size = st.st_size;
 	printf("taille du fichier : %d octets\n",(int)size);
-	adrMap = (char*)mmap(NULL, size, PROT_READ, MAP_SHARED, fd, 0);
+
+	adrMap = (char*)mmap(NULL, size, PROT_READ, MAP_SHARED, file, 0);
+
 	if (*adrMap == -1)
 	{
 		perror("mmap");
 		exit(-1);
 	}
 
-	close(fd);
+	close(file);
 
 	return adrMap;
 }
@@ -47,21 +50,7 @@ int compute(char* adrMap) {
 		int offset_m2;
 		int pastLines;
 		float value;
-		float** resultat;
 		FILE* file;
-
-		/* Thread attributes */
-		/*int cpuNumber;
-		pthread_t* threads;
-		pthread_attr_t attr;
-		cpu_set_t cpus;*/
-		/* ----------------- */
-
-		/* ----------------- */
-		/*cpuNumber = sysconf(_SC_NPROCESSORS_ONLN);
-		threads = (pthread_t*)malloc(sizeof(pthread_t));
-		pthread_attr_init(&attr);*/
-		/* ----------------- */
 
 		file = fopen("resultat.txt","a");
 		if (file == NULL)
@@ -72,8 +61,6 @@ int compute(char* adrMap) {
 
 		getSize(dimMatrice, adrMap, &offset);
 		offset_m1 = offset;
-
-		resultat = initMatrice(&resultat, dimMatrice[0], dimMatrice[3]);
 
 		printf("Taille m1 : %d - %d\n", dimMatrice[0], dimMatrice[1]);
 		printf("Taille m2 : %d - %d\n", dimMatrice[2], dimMatrice[3]);
@@ -109,9 +96,9 @@ int compute(char* adrMap) {
 		}
 		printf("-----------------------\n");
 		fprintf(file, "---------------------\n");
-	fclose(file);
+		fclose(file);
 	}
-
+	munmap(adrMap, getFileSize("matrice.txt"));
 	return 0;
 }
 
@@ -126,27 +113,8 @@ void getSize(int* dimMatrice, char* data, int* offset) {
 	*offset += decalage;
 }
 
-float** initMatrice(float*** matrice, int x, int y) {
-	int i;
-	*matrice = (float**)malloc(sizeof(float)*x);
-	for (i = 0; i < x; i++)
-	{
-		*(*(matrice)+i) = (float*)malloc(sizeof(float)*y);
-
-	}
-	return *matrice;
-}
-
-void freeMatrice(float** matrice, int x) {
-	int i;
-	for (i = 0; i < x; i++)
-	{
-		free(matrice[i]);
-	}
-	free(matrice);
-}
-
 /*=============================================*/
+
 float getValue(char* file, int* offset) {
 	float data;
 
@@ -165,8 +133,7 @@ void nextValue(char* file, int* offset) {
 	*offset += decalage;
 }
 
-void pastLine(char * file, int * offset, int x)
-{
+void pastLine(char * file, int * offset, int x) {
 	int i;
 	for (i = 0; i <= x; i++)
 	{
@@ -176,8 +143,7 @@ void pastLine(char * file, int * offset, int x)
 	}
 }
 
-int getRelativeOffset(char * file, int offset, int n)
-{
+int getRelativeOffset(char * file, int offset, int n) {
 	int tmp = offset;
 
 	int decalage = 0;
@@ -189,6 +155,29 @@ int getRelativeOffset(char * file, int offset, int n)
 		sscanf((file + offset), "%f%n", &null, &decalage );
 		offset += decalage;
 	}
-
 	return  (offset - tmp);
+}
+
+/* ------------------------------------------- */
+
+int getFileSize(const char* file_name) {
+	int file;
+	struct stat st;
+	size_t size;
+
+	file = open(file_name, O_RDONLY);
+	if(file == -1)
+	{
+		perror("open");
+		exit(-1);
+	}
+	if(stat("matrice.txt", &st))
+	{
+		perror("stat");
+		exit(-1);
+	}
+
+	size = st.st_size;
+	close(file);
+	return size;
 }
